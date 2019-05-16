@@ -17,3 +17,5 @@ QN_SK = 'utEyFUPxY1C_wy8O2k3zbSnUteDhwWbigAGP4VOP'
 QN_BUCKET = 'sz1812'
 
 
+# 每日最大反悔次数
+REWIND_TIMES = 3

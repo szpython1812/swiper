@@ -20,14 +20,14 @@ def submit_phonenum(request):
         send_vcode.delay(phone)
         return render_json()
     else:
-        return render_json(code=errors.PhoneNum_Empty, data='手机号码不能为空')
+        raise errors.PhoneNumEmpty()
 
 
 def submit_vcode(request):
     """提交短信验证码"""
     phone = request.POST.get('phone')
     vcode = request.POST.get('vcode')
-
+    print(request.path)
     # 从缓存中取出vcode
     cached_vcode = cache.get(keys.VCODE_KEY % phone)
     if cached_vcode == vcode:
@@ -86,6 +86,7 @@ def upload_avatar(request):
     # 保存用户上传的文件到本地
     # 拼出文件路径
     uid = request.session['uid']
+
     handler_avatar_upload.delay(uid, avatar)
     return render_json()
 
