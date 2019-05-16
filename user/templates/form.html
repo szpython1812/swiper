@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Form</title>
+</head>
+<body>
+    <form action="/user/form/" method="post">
+        {{ form.as_p }}
+        <input type="submit" value="Submit" />
+    </form>
+
+    <p style="color: red">{{ form.errors }}</p>
+    <hr>
+    {{ subject }}<br>
+    {{ message }}<br>
+    {{ sender }}<br>
+    {{ cc_myself }}<br>
+</body>
+</html>
