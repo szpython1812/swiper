@@ -19,3 +19,10 @@ QN_BUCKET = 'sz1812'
 
 # 每日最大反悔次数
 REWIND_TIMES = 3
+
+# 排行榜得分
+LIKE_SCORE = 5
+DISLIKE_SCORE = -5
+SUPERLIKE_SCORE = 7
+
+TOP_NUM = 10

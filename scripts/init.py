@@ -7,6 +7,8 @@ import random
 import django
 
 # 设置环境
+
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE_DIR)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "swiper.settings")
@@ -14,7 +16,7 @@ django.setup()
 
 
 from user.models import User
-# from vip.models import Vip, Permission, VipPermRelation
+from vip.models import Vip, Permission, VipPerm
 
 
 last_names = (
@@ -113,25 +115,25 @@ def create_vip_perm_relations():
     show_liked_me = Permission.objects.get(name='show_liked_me')
 
     # 给 VIP 1 分配权限
-    VipPermRelation.objects.get_or_create(vip_id=vip1.id, perm_id=vipflag.id)
-    VipPermRelation.objects.get_or_create(vip_id=vip1.id, perm_id=superlike.id)
+    VipPerm.objects.get_or_create(vip_id=vip1.id, perm_id=vipflag.id)
+    VipPerm.objects.get_or_create(vip_id=vip1.id, perm_id=superlike.id)
 
     # 给 VIP 2 分配权限
-    VipPermRelation.objects.get_or_create(vip_id=vip2.id, perm_id=vipflag.id)
-    VipPermRelation.objects.get_or_create(vip_id=vip2.id, perm_id=superlike.id)
-    VipPermRelation.objects.get_or_create(vip_id=vip2.id, perm_id=rewind.id)
+    VipPerm.objects.get_or_create(vip_id=vip2.id, perm_id=vipflag.id)
+    VipPerm.objects.get_or_create(vip_id=vip2.id, perm_id=superlike.id)
+    VipPerm.objects.get_or_create(vip_id=vip2.id, perm_id=rewind.id)
 
     # 给 VIP 3 分配权限
-    VipPermRelation.objects.get_or_create(vip_id=vip3.id, perm_id=vipflag.id)
-    VipPermRelation.objects.get_or_create(vip_id=vip3.id, perm_id=superlike.id)
-    VipPermRelation.objects.get_or_create(vip_id=vip3.id, perm_id=rewind.id)
-    VipPermRelation.objects.get_or_create(vip_id=vip3.id, perm_id=anylocation.id)
-    VipPermRelation.objects.get_or_create(vip_id=vip3.id, perm_id=unlimit_like.id)
-    VipPermRelation.objects.get_or_create(vip_id=vip3.id, perm_id=show_liked_me.id)
+    VipPerm.objects.get_or_create(vip_id=vip3.id, perm_id=vipflag.id)
+    VipPerm.objects.get_or_create(vip_id=vip3.id, perm_id=superlike.id)
+    VipPerm.objects.get_or_create(vip_id=vip3.id, perm_id=rewind.id)
+    VipPerm.objects.get_or_create(vip_id=vip3.id, perm_id=anylocation.id)
+    VipPerm.objects.get_or_create(vip_id=vip3.id, perm_id=unlimit_like.id)
+    VipPerm.objects.get_or_create(vip_id=vip3.id, perm_id=show_liked_me.id)
 
 
 if __name__ == '__main__':
-    create_robots(10000)
-    # init_permission()
-    # init_vip()
-    # create_vip_perm_relations()
+    # create_robots(10000)
+    init_permission()
+    init_vip()
+    create_vip_perm_relations()

@@ -33,4 +33,9 @@ urlpatterns = [
     url(r'^api/social/get/liked/me/$', social_api.get_like_me_list),
     url(r'^api/social/rewind/$', social_api.rewind),
 
+    url(r'^api/social/get/friends/$', social_api.get_friends_list),
+    url(r'^api/social/get/friend/$', social_api.get_friend_info),
+
+    url(r'^api/social/get/top/n/$', social_api.get_top_n),
+
 ]

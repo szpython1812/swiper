@@ -1,6 +1,7 @@
+import logging
 from django.core.cache import cache
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.conf import settings
 
 from user.logic import handler_avatar_upload
 from user.models import User
@@ -11,6 +12,7 @@ from common import keys
 from user.forms import ContactForm
 from user.forms import ProfileModelForm
 
+logger = logging.getLogger('err')
 
 # Create your views here.
 def submit_phonenum(request):
@@ -20,6 +22,7 @@ def submit_phonenum(request):
         send_vcode.delay(phone)
         return render_json()
     else:
+        logger.error('phone num is empty')
         raise errors.PhoneNumEmpty()
 
 
@@ -50,8 +53,15 @@ def submit_vcode(request):
 
 def get_profile(request):
     """获取个人交友资料"""
-    user = User.objects.get(id=request.session['uid'])
-    return render_json(code=0, data=user.profile.to_dict())
+    user = request.user
+    # 先从缓存中 拿数据
+    key = keys.PROFILE_KEY % user.id
+    data = cache.get(key)
+    if not data:
+        # 拿不到才从数据库中拿,并把数据写入缓存
+        data = user.profile.to_dict()
+        cache.set(key, data, 86400 * 7)
+    return render_json(code=0, data=data)
 
 
 def get_form(request):
@@ -74,8 +84,11 @@ def edit_profile(request):
     form = ProfileModelForm(request.POST)
     if form.is_valid():
         profile = form.save(commit=False)
-        profile.id = request.session['uid']
+        profile.id = request.user.id
         profile.save()
+        # 更新缓存
+        key = keys.PROFILE_KEY % profile.id
+        cache.set(key, profile.to_dict(), 86400 * 7)
         return render_json(code=0, data=profile.to_dict())
     return render_json(code=errors.PROFILE_ERROR, data=form.errors)
 

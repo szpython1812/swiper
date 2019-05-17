@@ -4,6 +4,7 @@ from django.db import models
 
 from lib.mixins import ModelMixin
 # Create your models here.
+from vip.models import Vip
 
 
 class User(models.Model):
@@ -24,6 +25,14 @@ class User(models.Model):
     avatar = models.CharField(max_length=256, verbose_name='个人形象')
     location = models.CharField(max_length=64, verbose_name='常居地')
 
+    # vip关系
+    vip_id = models.IntegerField(verbose_name='vip等级', default=1)
+
+    @property
+    def vip(self):
+        if not hasattr(self, '_vip'):
+            self._vip, _ = Vip.get(id=self.vip_id)
+        return self._vip
 
     def __str__(self):
         return f'<User {self.nickname}>'
@@ -44,6 +53,7 @@ class User(models.Model):
 
     def to_dict(self):
         return {
+            "id": self.id,
             "phonenum": self.phonenum,
             "nickname": self.nickname,
             "sex": self.sex,
